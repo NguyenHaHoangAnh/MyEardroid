@@ -5,8 +5,9 @@ const images = {
     'voiceToSign': require('./voiceToSign.png'),
     'textToSign': require('./textToSign.png'),
     // Sound detection
-    '[0]': require('./[0].png'),
+    '[1]': require('./[1].png'),
     '[2]': require('./[2].png'),
+    '[3]': require('./[3].png'),
     'mic_circle_outline': require('./mic_circle_outline.png'),
     'mic_off_circle_outline': require('./mic_off_circle_outline.png'),
     // Voice to sign

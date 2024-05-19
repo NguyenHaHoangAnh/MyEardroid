@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, Platform, PermissionsAndroid } from 'react-native';
+import { View, Text, StyleSheet, Image, Platform, PermissionsAndroid, Vibration } from 'react-native';
 import { Buffer } from 'buffer';
 import { globalStyles } from '../../globalStyles';
 import images from '../../assets/images';
@@ -126,10 +126,11 @@ function SoundDetection() {
     }
     
     const getResultText = (result) => {
-        if (result !== '[0]' && result !== '[2]') return '';
+        if (result !== '[1]' && result !== '[2]' && result !== '[3]') return '';
         return new Map([
-            ['[0]', 'Thông báo sân bay'],
-            ['[2]', 'Còi báo cháy'],
+            ['[1]', 'Thông báo sân bay'],
+            ['[2]', 'Còi xe ưu tiên'],
+            ['[3]', 'Còi báo cháy'],
         ]).get(result);
     }
 
@@ -155,10 +156,18 @@ function SoundDetection() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [audio]);
 
+    useEffect(() => {
+        if ((result === '[1]' || result === '[2]' || result === '[3]') && powerOn) {
+            Vibration.vibrate([1000, 2000, 1000], true); // wait 1s, vibrate 2s, wait 1s
+        } else {
+            Vibration.cancel();
+        }
+    }, [result, powerOn]);
+
     return (
         <View style={globalStyles.container}>
             <View style={[globalStyles.itemsCenter, globalStyles.justifyCenter, globalStyles.flex1]}>
-                {(result === '[0]' || result === '[2]') && powerOn ? (
+                {(result === '[1]' || result === '[2]' || result === '[3]') && powerOn ? (
                     <Image source={images[result]} style={styles.resultImage} />
                 ) : (
                     <View style={styles.resultImage}></View>
